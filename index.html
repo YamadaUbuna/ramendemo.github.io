@@ -1,77 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
+    <meta charset="UTF-8">
     <title>ラーメン注文デモ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: sans-serif;
             text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
         }
+
+        h1 {
+            margin: 20px 0;
+        }
+
+        .menu-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 10px;
+        }
+
         .menu-item {
-            margin-bottom: 20px;
+            background: white;
             border: 1px solid #ccc;
+            border-radius: 10px;
             padding: 15px;
-            display: inline-block;
-            margin-right: 10px;
-            vertical-align: top; /* 上揃えにする /
+            width: 250px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
+
+        .menu-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
         .quantity-controls {
             display: flex;
             align-items: center;
             justify-content: center;
             margin-top: 10px;
         }
+
         .quantity-controls button {
-            width: 30px;
-            height: 30px;
-            font-size: 16px;
-            margin: 0 5px;
-            cursor: pointer;
-        }
-        .quantity-controls input {
             width: 40px;
-            text-align: center;
-        }
-        #total-price {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        #confirm-order-button {
-            margin-top: 30px;
-            padding: 10px 20px;
-            font-size: 18px;
+            height: 40px;
+            font-size: 20px;
+            margin: 0 10px;
             cursor: pointer;
-            background-color: #4CAF50; / 緑色 /
-            color: white;
-            border: none;
+        }
+
+        .quantity-controls input {
+            width: 50px;
+            height: 40px;
+            font-size: 18px;
+            text-align: center;
+            border: 1px solid #ccc;
             border-radius: 5px;
         }
-        #confirm-order-button:hover {
-            opacity: 0.8;
+
+        #total-price {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
         }
+
+        #confirm-order-button {
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+        }
+
+        #confirm-order-button:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 600px) {
+            .menu-item {
+                width: 90%;
+            }
+
+            .quantity-controls {
+                flex-direction: row;
+            }
+        }
+
+.menu-item img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 5px;
+}
     </style>
 </head>
 <body>
     <h1>ラーメン注文デモ</h1>
 
-    <div class="menu-item">
-        <h2>醤油ラーメン</h2>
-        <p>850円</p>
-        <div class="quantity-controls">
-            <button onclick="decrement('shoyu')">-</button>
-            <input type="number" id="shoyu-quantity" value="0" min="0" readonly>
-            <button onclick="increment('shoyu')">+</button>
+    <div class="menu-container">
+        <div class="menu-item">
+    <h2>醤油ラーメン</h2>
+    <p>850円</p>
+    <img src="syouyu.png" alt="醤油ラーメン">
+            <div class="quantity-controls">
+                <button onclick="decrement('shoyu')">−</button>
+                <input type="number" id="shoyu-quantity" value="0" min="0" readonly>
+                <button onclick="increment('shoyu')">＋</button>
+            </div>
         </div>
-    </div>
 
-    <div class="menu-item">
-        <h2>塩ラーメン</h2>
-        <p>900円</p>
-        <div class="quantity-controls">
-            <button onclick="decrement('shio')">-</button>
-            <input type="number" id="shio-quantity" value="0" min="0" readonly>
-            <button onclick="increment('shio')">+</button>
+        <div class="menu-item">
+    <h2>塩ラーメン</h2>
+    <p>900円</p>
+    <img src="shio.png" alt="塩ラーメン">
+            <div class="quantity-controls">
+                <button onclick="decrement('shio')">−</button>
+                <input type="number" id="shio-quantity" value="0" min="0" readonly>
+                <button onclick="increment('shio')">＋</button>
+            </div>
         </div>
     </div>
 
@@ -79,45 +135,44 @@
 
     <button id="confirm-order-button" onclick="confirmOrder()">注文確定</button>
 
-<script>
-    function updateTotalPrice() {
-        const shoyuQuantity = parseInt(document.getElementById('shoyu-quantity').value);
-        const shioQuantity = parseInt(document.getElementById('shio-quantity').value);
-        const shoyuPrice = 850;
-        const shioPrice = 900;
-        const totalPrice = (shoyuQuantity * shoyuPrice) + (shioQuantity * shioPrice);
-        document.getElementById('total-price').textContent = `合計金額: ${totalPrice}円`;
-    }
+    <script>
+        function updateTotalPrice() {
+            const shoyuQuantity = parseInt(document.getElementById('shoyu-quantity').value);
+            const shioQuantity = parseInt(document.getElementById('shio-quantity').value);
+            const shoyuPrice = 850;
+            const shioPrice = 900;
+            const totalPrice = (shoyuQuantity * shoyuPrice) + (shioQuantity * shioPrice);
+            document.getElementById('total-price').textContent = `合計金額: ${totalPrice}円`;
+        }
 
-    function increment(item) {
-        const quantityInput = document.getElementById(`${item}-quantity`);
-        quantityInput.value = parseInt(quantityInput.value) + 1;
-        updateTotalPrice();
-    }
-
-    function decrement(item) {
-        const quantityInput = document.getElementById(`${item}-quantity`);
-        const currentValue = parseInt(quantityInput.value);
-        if (currentValue > 0) {
-            quantityInput.value = currentValue - 1;
+        function increment(item) {
+            const quantityInput = document.getElementById(`${item}-quantity`);
+            quantityInput.value = parseInt(quantityInput.value) + 1;
             updateTotalPrice();
         }
-    }
 
-    function confirmOrder() {
-        const totalPriceText = document.getElementById('total-price').textContent;
-        const confirmation = confirm(`${totalPriceText}\n注文を確定しますか？`);
-
-        if (confirmation) {
-            alert('ご注文が確定しました！ありがとうございます。');
-            location.reload();
-        } else {
-            alert('注文をキャンセルしました。');
+        function decrement(item) {
+            const quantityInput = document.getElementById(`${item}-quantity`);
+            const currentValue = parseInt(quantityInput.value);
+            if (currentValue > 0) {
+                quantityInput.value = currentValue - 1;
+                updateTotalPrice();
+            }
         }
-    }
 
-    // 初期化
-    updateTotalPrice();
-</script>
+        function confirmOrder() {
+            const totalPriceText = document.getElementById('total-price').textContent;
+            const confirmation = confirm(`${totalPriceText}\n注文を確定しますか？`);
+
+            if (confirmation) {
+                alert('ご注文が確定しました！ありがとうございます。');
+                location.reload();
+            } else {
+                alert('注文をキャンセルしました。');
+            }
+        }
+
+        updateTotalPrice();
+    </script>
 </body>
 </html>
