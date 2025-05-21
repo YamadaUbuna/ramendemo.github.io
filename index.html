@@ -79,46 +79,45 @@
 
     <button id="confirm-order-button" onclick="confirmOrder()">注文確定</button>
 
-    <script>
-        function updateTotalPrice() {
-            const shoyuQuantity = parseInt(document.getElementById('shoyu-quantity').value);
-            const shioQuantity = parseInt(document.getElementById('shio-quantity').value);
-            const shoyuPrice = 850;
-            const shioPrice = 900;
-            const totalPrice = (shoyuQuantity shoyuPrice) + (shioQuantity * shioPrice);
-            document.getElementById('total-price').textContent = 合計金額: ${totalPrice}円;
-        }
+<script>
+    function updateTotalPrice() {
+        const shoyuQuantity = parseInt(document.getElementById('shoyu-quantity').value);
+        const shioQuantity = parseInt(document.getElementById('shio-quantity').value);
+        const shoyuPrice = 850;
+        const shioPrice = 900;
+        const totalPrice = (shoyuQuantity * shoyuPrice) + (shioQuantity * shioPrice);
+        document.getElementById('total-price').textContent = `合計金額: ${totalPrice}円`;
+    }
 
-        function increment(item) {
-            const quantityInput = document.getElementById(${item}-quantity);
-            quantityInput.value = parseInt(quantityInput.value) + 1;
+    function increment(item) {
+        const quantityInput = document.getElementById(`${item}-quantity`);
+        quantityInput.value = parseInt(quantityInput.value) + 1;
+        updateTotalPrice();
+    }
+
+    function decrement(item) {
+        const quantityInput = document.getElementById(`${item}-quantity`);
+        const currentValue = parseInt(quantityInput.value);
+        if (currentValue > 0) {
+            quantityInput.value = currentValue - 1;
             updateTotalPrice();
         }
+    }
 
-        function decrement(item) {
-            const quantityInput = document.getElementById(${item}-quantity);
-            const currentValue = parseInt(quantityInput.value);
-            if (currentValue > 0) {
-                quantityInput.value = currentValue - 1;
-                updateTotalPrice();
-            }
+    function confirmOrder() {
+        const totalPriceText = document.getElementById('total-price').textContent;
+        const confirmation = confirm(`${totalPriceText}\n注文を確定しますか？`);
+
+        if (confirmation) {
+            alert('ご注文が確定しました！ありがとうございます。');
+            location.reload();
+        } else {
+            alert('注文をキャンセルしました。');
         }
+    }
 
-        function confirmOrder() {
-            const totalPriceText = document.getElementById('total-price').textContent;
-            const confirmation = confirm(${totalPriceText}\n注文を確定しますか？);
-
-            if (confirmation) {
-                alert('ご注文が確定しました！ありがとうございます。');
-                // デモンストレーション用なので、ページをリロードして初期状態に戻す
-                location.reload();
-            } else {
-                alert('注文をキャンセルしました。');
-            }
-        }
-
-        // ページ読み込み時に合計金額を初期化
-        updateTotalPrice();
-    </script>
+    // 初期化
+    updateTotalPrice();
+</script>
 </body>
 </html>
